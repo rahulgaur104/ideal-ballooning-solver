@@ -13,3 +13,4 @@ The definitions of the input parameters can be found in Chapter 3 of Dr. Edmund 
 
 ## Relevant papers
 * [The Zero Turbulence Manifold in Fusion Plasmas, E. G. Highcock](https://arxiv.org/abs/1207.4419)
+* [COBRA: An Optimized Code for Fast Analysis of Ideal Ballooning Stability of Three-Dimensional Magnetic Equilibria](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.596.1387&rep=rep1&type=pdf)
