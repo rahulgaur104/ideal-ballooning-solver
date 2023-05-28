@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-In this file the user sets all the important paramters used in Microstopt
+In this file the user sets all the important paramters used for stability optimization
 """
 
 import numpy as np
 import os
 import pickle
 import pdb
+import sys
+
+eqbm_option =int(eval(sys.argv[1]))
 
 #max function evaluation before termination
 maxf = int(35)
@@ -19,8 +22,6 @@ maxf = int(35)
 # eqbm_option = 1 => NCSX
 # eqbm_option = 2 => HBERG
 # eqbm_option = 3 => NW
-
-eqbm_option = int(0)
 
 if eqbm_option == int(0):
     # For the axisymmetric case, these aren't really pol and tor indices

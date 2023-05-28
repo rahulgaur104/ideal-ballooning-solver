@@ -20,7 +20,7 @@ path1 = os.getcwd() + "/save_n_load"
 # Removing files from previous optimization and creating new files
 
 
-rmold = "rm -r df0_list.out \n rm -r f0_list.out \n rm penalties.out \n rm -r {0}/grid_files/* \n rm *_list.out \n rm -r {0}/gs2* \n rm -r {0}/.gs2* \n rm -r {0}/rs* \n rm -r {1}/*.npy \n rm -r input.dof* \n rm -r dcon* \n rm -r jxbout_* \n rm -r threed1.*".format(path0, path1)
+rmold = "rm -r df0_list.out \n rm -r f0_list.out \n rm penalties.out \n rm -r {0}/grid_files/* \n rm *_list.out \n rm -r {0}/gs2* \n rm -r {0}/.gs2* \n rm -r {0}/rs* \n rm -r {1}/*.npy \n rm -r input.dof* \n rm -r dcon* \n rm -r jxbout_* \n rm -r threed1.* \n rm slurm-*.out \n rm wout_dof*.nc".format(path0, path1)
 
 #print(rmold)
 #args = shlex.split(rmold)

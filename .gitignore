@@ -1,0 +1,10 @@
+
+*.sif
+
+
+*pycache*
+
+slurmstatus*.txt
+
+
+save_n_load/*.npy

@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 """
-This script performs derivative based optimization
+This script performs derivative based optimization of the NCSX stellarator equilibrium
+ against the ideal-ballooning mode using the SIMSOPT framework.
 
-If performing optimization in steps, make sure that the iter0 in the new optimization loop has the iter0 value from the previous optimization loop
-
-Objective function of sqrt(objective function)
+If you are running this script, make sure you have set eqbm_option = 1 in the script create_dict.py
 """
 import numpy as np
 import subprocess as spr
@@ -14,20 +13,17 @@ import pickle
 import pdb
 import os
 
-with open("params_dict.pkl", 'rb') as f:
-    save_dict = pickle.load(f)
+iter0 = int(0)
 
 path0  = os.getcwd() + "/save_n_load"
 
-iter0 = int(0)
-
 # remove all the old files
-spr.call(['python3 -u create_dict.py'], shell=True)
+spr.call(['python3 -u create_dict.py 1'], shell=True)
 
 # create dictionary with all the sim-related information
 spr.call(['python3 -u arr_create2.py'], shell=True)
 
-with open('params_dict.pkl', 'rb') as f:
+with open("params_dict.pkl", 'rb') as f:
     save_dict = pickle.load(f)
 
 totalndofs  = save_dict['totalndofs']
