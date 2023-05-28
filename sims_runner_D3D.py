@@ -3,12 +3,10 @@
 This script performs derivative based optimization of the D3D tokamak equilibrium
  against the ideal-ballooning mode using the SIMSOPT framework.
 
-If you are running this script, make sure you have set eqbm_option = 0 in the script create_dict.py
 """
 import numpy as np
 import subprocess as spr
 from scipy.optimize import least_squares
-from scipy.optimize import basinhopping, shgo, Bounds
 import pickle
 import pdb
 import os
