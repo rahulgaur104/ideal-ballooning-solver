@@ -1,10 +1,9 @@
 
 *.sif
 
-
-*pycache*
+__pycache__/
 
 slurmstatus*.txt
 
-
 save_n_load/*.npy
+
