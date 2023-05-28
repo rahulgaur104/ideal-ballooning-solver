@@ -1,4 +1,4 @@
-#!/USR/BIN/ENV python
+#!/usr/bin/env python
 """
 This script calls multiple instances of vmec, each with a different Dof and generates the GS2 grid file from the equilibrium. One typically has to call ndofs + 1 instances to calcuate the objective function and the jacobian for ndofs
 """
@@ -83,23 +83,6 @@ else:
 
 
 if len(save_dict['iotaidxs']) > 0:
-    #niota_deg = 5
-    #len0 = 80 # length of non-zero floats in ai_aux_s
-    #
-    #funfit2 = np.polynomial.polynomial.polyfit(vmec.indata.ai_aux_s[:len0], vmec.indata.ai_aux_f[:len0], niota_deg)
-    #print("Max iota fit error = {0} \n ".format(np.max(np.abs(np.polynomial.polynomial.polyval(vmec.indata.ai_aux_s[:len0], funfit2) - vmec.indata.ai_aux_f[:len0]))))
-    #
-    #vmec.n_iota = len(funfit2)
-    #
-    #vmec.indata.piota_type = 'power_series'
-    #vmec.iota_profile = ProfilePolynomial(funfit2)
-    #vmec.iota_profile.fix_all()
-    #
-    #iotap = ProfilePolynomial(funfit2*1.0)
-    #vmec.iota_profile = iotap
-    #iotap.unfix(save_dict['iotaidxs'])
-    #vmec.iota_profile = ProfileScaled(iotap, 1.0)
-
     vmec.indata.piota_type = 'power_series'
     ai      = np.abs(vmec.indata.ai)
     finit_coef_idx = len(ai[ai > 0])
@@ -107,9 +90,6 @@ if len(save_dict['iotaidxs']) > 0:
     vmec.iota_profile = iotap
     iotap.unfix(save_dict['iotaidxs'])
     vmec.iota_profile = ProfileScaled(iotap, 0.5)
-
-
-
 
 
 if save_dict['isphifree'] == 1:
@@ -126,18 +106,14 @@ if iter0 == 0:
     if dof_idx == 0: # For the original x0; No Dof is being changed
         vmec.x = np.load(path1 + "/x0.npy", allow_pickle=True)
     elif np.abs(np.load(path1 + "/x0.npy", allow_pickle=True)[dof_idx-1]) <= 1E-2: # If a Dof < 0.01, take an absolute step
-        #y = vmec.x
         y = np.load(path1 + "/x0.npy", allow_pickle=True)
         y[dof_idx-1] = y[dof_idx-1] + abs_step
         vmec.x = y
-        #vmec.x[dof_idx-1] = vmec.x[dof_idx-1] + abs_step
         isabs[0] = int(1)
     else:# otherwise take a relative step
-        #y = vmec.x
         y = np.load(path1 + "/x0.npy", allow_pickle=True)
         y[dof_idx-1] = y[dof_idx-1]*(1 + rel_step)
         vmec.x = y
-        #vmec.x[dof_idx-1] = vmec.x[dof_idx-1]*(1 + rel_step)
 else:
     if dof_idx == 0: # For the original x0; No Dof is being changed
         vmec.x = np.load(path1 + "/x0.npy", allow_pickle=True)[-1]	
@@ -145,17 +121,12 @@ else:
         y = np.load(path1 + "/x0.npy", allow_pickle=True)[-1]
         y[dof_idx-1] = y[dof_idx-1] + abs_step
         vmec.x = y
-        #vmec.x[dof_idx-1] = vmec.x[dof_idx-1] + abs_step
-        #isabs = np.array([1])
         isabs[0] = int(1)
     else:# otherwise take a relative step
         y = np.load(path1 + "/x0.npy", allow_pickle=True)[-1]
         y[dof_idx-1] = y[dof_idx-1]*(1 + rel_step)
         vmec.x = y
-        #vmec.x[dof_idx-1] = vmec.x[dof_idx-1]*(1 + rel_step)
 
-## Gives the names of all the free Dofs
-#np.array(vmec.full_dof_names)[vmec.dofs_free_status]
 
 #pdb.set_trace()
 ##############################################################################################################
@@ -187,7 +158,6 @@ print("isconvrgd value", isconvrgd)
 
 if isconvrgd.item() == 1:
     np.save(path1 + "/isconvrgd.npy", isconvrgd)
-
     
     if mpi.group == 0:
     
@@ -277,30 +247,6 @@ if isconvrgd.item() == 1:
                         
             spr.call(['rm -r dcon*.txt\n rm -r threed1.*'], shell=True)
         
-        
-        ##################################################################################################################
-        #####################------------------SAVING POTENTIALLY-USEFUL PROXIES-----------------#########################
-        ##################################################################################################################
-        
-        # since each group has 12 processors( surfaces), we can save a different proxy for
-        # each processor
-        #P0    = np.load(path1 + "/P{0}.npy".format(int(dof_idx)))
-        #
-        #prxy0_gthrd = np.zeros((comm.Get_size(),))
-        #
-        #comm.Gather([prxy1, MPI.DOUBLE], [prxy0_gthrd, MPI.DOUBLE], root=0)
-        #
-        #if rank == 0:
-        #    # insert the Dof value at the beginning of p00
-        #    #prxy0_gthrd = np.insert(prxy0_gthrd, 0, dof_idx)
-        #    if len(np.shape(P0)) != 0:
-        #        P0 = np.vstack((P0, prxy0_gthrd))
-        #    else:
-        #        P0 = np.append(P0, prxy0_gthrd)
-        #        P0 = np.delete(P0, 0)
-        #
-        #    #print("prxy0_gthrd = ", P0)
-        #    np.save(path1 + "/P{0}0.npy".format(int(dof_idx)), P0)
 
 else:
     np.save(path1 + "/isconvrgd.npy", isconvrgd)

@@ -37,9 +37,6 @@ aminor0  = 0.32759
 volavgB0 = 1.59634
 aspect0  = 4.3652
 ithresh0 = 0.51
-# with no iota
-#gamma_ball_thresh = -0.001
-#gamma_ball_thresh = -0.01
 
 with open(path0 + "/penalty.npy", 'wb') as f:
     np.save(f, np.array([aminor0, volavgB0, aspect0, ithresh0]))
@@ -54,7 +51,8 @@ with open(path0 + "/penalty.npy", 'wb') as f:
 #6 -> micro_gamma,
 #7 -> ball_gamma
 
-# without  iota
+# set stability threshold. An equilibrium is ball stable if the 
+# growth rate is less than gamma_ball_thresh
 gamma_ball_thresh = -0.0002
 prefac = np.array([0.5, 0.5, 0.0, 0., 0., 0., 0., 50])
 
@@ -83,7 +81,6 @@ x0   = np.array([-4.1452e-03, -4.1374e-03,  3.6116e-03, -3.3285e-04,  4.7123e-04
 #x0  = np.load(path0 + "/x0.npy", allow_pickle=True)
 x0  = np.save(path0 + "/x0.npy", x0)
 
-
 df0 = np.zeros((totalndofs, ))
 
 with open('params_dict.pkl', 'rb') as f:
@@ -103,14 +100,12 @@ def dfobj(x0):
         x0_old = np.load(path0 + "/x0.npy", allow_pickle=True)[-1]
     
     #print("x0_old and x0", x0_old, x0, iter0)
-
     gamma_gthrd = np.zeros((nsurfs,))
     ky_max_gthrd = np.zeros((nsurfs,))
     kx_max_gthrd = np.zeros((nsurfs,))
 
     gamma_gthrd2 = np.zeros((totalndofs+1, nsurfs))
     gamma_ball2  = np.zeros((totalndofs+1, nsurfs))
-
 
     # if the optimizer asks for the gradient at a different value of x0
     # we recalculate the new eqbm and new objective function
@@ -127,7 +122,6 @@ def dfobj(x0):
         isconvrgd = np.load(path0 + "/isconvrgd.npy", allow_pickle=True).item()
         
         if isconvrgd == 1:
-
             spr.call(['python3 -u ball_submit.py {0}'.format(iter0)], shell=True)
 
             for i in range(totalndofs+1):
@@ -145,7 +139,6 @@ def dfobj(x0):
 
         else:# What should the gradients be if VMEC doesn't converge? Setting to 0
             for i in range(totalndofs+1):
-
                 dof_idx = i
 
                 if np.load(path0 + '/isabs{0}.npy'.format(i))[-1] == 1: #never called at the first itern
@@ -189,12 +182,8 @@ def dfobj(x0):
             f0_arr[i] = f0
             if i > 0:
                 df0_arr[0, i] = (f0_arr[i] - f0_arr[0])/step_arr[i] * 0.5 * 1/np.sqrt(f0_arr[0])
-        #df0_arr[0, i] = (f0_arr[i] - f0_arr[0])/step_arr[i]
     
-    #pdb.set_trace()
     ## Use this if the objective function has a square root
-    #df0_arr = (f0_arr[1:] - f0_arr[0])/step_arr[1:] * 0.5 * 1/np.sqrt(f0_arr[0])
-    
     f0_list = f0_arr.tolist()
     f0 = open('f0_list.out', 'a')
     f0.write(f'{iter0}, {f0_list}')
@@ -207,8 +196,6 @@ def dfobj(x0):
     df0.write('\n')
     df0.close()
 
-    #print("f0_arr = \n", f0_arr)
-    #print("df0_arr = \n", df0_arr)
     return df0_arr[:, 1:]
 
 def fobj(x0):
@@ -229,8 +216,7 @@ def fobj(x0):
     isconvrgd = np.load(path0 + "/isconvrgd.npy", allow_pickle=True).item()
 
     if isconvrgd == 1:
-        #spr.call(['rm -r slurm-*.out'], shell=True)
-
+        spr.call(['rm -r slurm-*.out'], shell=True)
         spr.call(['python3 -u ball_submit.py {0}'.format(iter0)], shell=True)
         if iter0 == 0:
             gamma_ball = np.load(path0 + "/ball_gam{0}.npy".format(dof_idx), allow_pickle=True)
@@ -247,14 +233,12 @@ def fobj(x0):
         f0 = 9999.
  
     print("obj f0 = ", f0)
-   
     return np.sqrt(f0)
 
 	
 
 iota_lb = 2*np.array([0.30, 0.15]) # additional factor due to scaling
 iota_ub = 2*np.array([65, 0.80])
-
 
 mpol_max    = int(9)
 ntor_max    = int(9)
@@ -310,8 +294,6 @@ for i in range(len(pol_idxs)):
     else:                                            
         boundary_lb = np.append(boundary_lb, RBClb[i][int((mpol_max-1)/2) + np.arange(-tor_idxs[i], tor_idxs[i]+1, 1)])
         boundary_ub = np.append(boundary_ub, RBCub[i][int((mpol_max-1)/2) + np.arange(-tor_idxs[i], tor_idxs[i]+1, 1)])
-    #print(len(boundary_lb))
-
 
 for i in range(len(pol_idxs)):
     if pol_idxs[i] == 0:
@@ -320,7 +302,6 @@ for i in range(len(pol_idxs)):
     else:
         boundary_lb = np.append(boundary_lb, ZBSlb[i][int((mpol_max-1)/2) + np.arange(-tor_idxs[i], tor_idxs[i]+1, 1)])
         boundary_ub = np.append(boundary_ub, ZBSub[i][int((mpol_max-1)/2) + np.arange(-tor_idxs[i], tor_idxs[i]+1, 1)])
-    #print(len(boundary_lb))
 
 #pdb.set_trace()
 
@@ -355,7 +336,6 @@ x0   = np.array([-4.1452e-03, -4.1374e-03,  3.6116e-03, -3.3285e-04,  4.7123e-04
 
 # wrap fobj in scipy.least_squares (local, gradient-based)
 least_squares(fobj, x0, jac = dfobj, bounds = (lb, ub), diff_step = 1.0E-3, verbose=2, max_nfev = save_dict['maxf'], ftol = 8.E-5, xtol = 3.E-5)
-#least_squares(fobj, x0, jac = dfobj, diff_step = 1.0E-3, verbose=2, max_nfev = save_dict['maxf'])
 
 
 

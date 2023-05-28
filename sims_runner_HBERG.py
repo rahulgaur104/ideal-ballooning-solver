@@ -38,9 +38,6 @@ aminor0  = 0.6015
 volavgB0 = 2.500
 aspect0  = 3.3739
 ithresh0 = 0.63
-# with no iota
-#gamma_ball_thresh = -0.001
-#gamma_ball_thresh = -0.01
 
 with open(path0 + "/penalty.npy", 'wb') as f:
     np.save(f, np.array([aminor0, volavgB0, aspect0, ithresh0]))
@@ -64,8 +61,6 @@ with open(path0 + "/penalty_prefac.npy", 'wb') as f:
 
 # get x0/set x0
 x0  = np.load(path0 + "/x0.npy", allow_pickle=True)
-#x0  = np.save(path0 + "/x0.npy", x0)
-
 
 df0 = np.zeros((totalndofs, ))
 
@@ -172,9 +167,7 @@ def dfobj(x0):
             f0_arr[i] = f0
             if i > 0:
                 df0_arr[0, i] = (f0_arr[i] - f0_arr[0])/step_arr[i] * 0.5 * 1/np.sqrt(f0_arr[0])
-        #df0_arr[0, i] = (f0_arr[i] - f0_arr[0])/step_arr[i]
     
-    #pdb.set_trace()
     ## Use this if the objective function has a square root
     #df0_arr = (f0_arr[1:] - f0_arr[0])/step_arr[1:] * 0.5 * 1/np.sqrt(f0_arr[0])
     
@@ -310,19 +303,11 @@ for i in range(len(pol_idxs)):
 boundary_lb = np.delete(boundary_lb, 0)
 boundary_ub = np.delete(boundary_ub, 0)
 
-#phiedge_lb = np.array([1.0])
-#phiedge_ub = np.array([4.0])
-
-#lb = np.concatenate((iota_lb, boundary_lb))
-#ub = np.concatenate((iota_ub, boundary_ub))
-
 lb = boundary_lb
 ub = boundary_ub
 
-
 # wrap fobj in scipy.least_squares (local, gradient-based)
 least_squares(fobj, x0, jac = dfobj, bounds = (lb, ub), diff_step = 1.0E-3, verbose=2, max_nfev = save_dict['maxf'], ftol = 5.E-5, xtol = 1.E-5)
-#least_squares(fobj, x0, jac = dfobj, diff_step = 1.0E-3, verbose=2, max_nfev = save_dict['maxf'])
 
 
 

@@ -63,26 +63,6 @@ else:
 
 if len(save_dict['iotaidxs']) > 0:
 
-    #niota_deg = 5 # niota Dofs  = niota_deg + 1
-    #len0 = 80 # length of non-zero floats in ai_aux_s
-    
-    #funfit2 = np.polynomial.polynomial.polyfit(vmec.indata.ai_aux_s[:len0], vmec.indata.ai_aux_f[:len0], niota_deg)
-    #print("Max iota fit error = {0} \n ".format(np.max(np.abs(np.polynomial.polynomial.polyval(vmec.indata.ai_aux_s[:len0], funfit2) - vmec.indata.ai_aux_f[:len0]))))
-    
-    #vmec.n_iota = len(funfit2)
-    
-    #vmec.indata.piota_type = 'power_series'
-    #vmec.iota_profile = ProfilePolynomial(funfit2)
-    #vmec.iota_profile.fix_all()
-    
-    #iotap = ProfilePolynomial(funfit2*1.0)
-    #vmec.iota_profile = iotap
-    #iotap.unfix(save_dict['iotaidxs'])
-    #vmec.iota_profile = ProfileScaled(iotap, 1.0)
-
-    #vmec.iota_profile.fix_all()
-    #vmec.iota_profile.unfix()
-
     vmec.indata.piota_type = 'power_series'
     ai      = np.abs(vmec.indata.ai)
     finit_coef_idx = len(ai[ai > 0])

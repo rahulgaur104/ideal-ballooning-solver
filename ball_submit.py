@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script submits the batch file used to calculate the geometry and GS2 input files for all the Dofs and surfaces.
+This script submits the batch file used to calculate the geometry for all the Dofs and surfaces.
 """
 
 import numpy as np
@@ -54,16 +54,15 @@ execlist = []
 
 for i in range(totalexecs): # Each dof will have a ball_submit.py script that calculates growth rates on all surfs
     ballcmd2  = "PMIX_MCA_psec=native PMIX_MCA_gds=hash srun -N {0} -n{1} -c 1 --mpi=pmix_v3 singularity run simsopt_v0.13.0.sif /venv/bin/python -u ball_scan.py {2} {3} {4} & \n".format(nodesperjob, nprocs, iter0, i, ngroups)
-    #ballcmd2  = "PMIX_MCA_psec=native srun -N {0} -n{1} -c 1 --mpi=pmix_v3 singularity run simsopt_v0.11.0.sif /venv/bin/python -u ball_scan2.py {2} {3} {4} & \n".format(nodesperjob, nprocs, iter0, i, ngroups)
-    #ballcmd2  = "srun -N {0} -n{1} -c 1 python3 -u ball_scan2.py {2} {3} {4} & \n".format(nodesperjob, nprocs, iter0, i, ngroups)
-    # i is the dof_idx for this case
+    #ballcmd2  = "PMIX_MCA_psec=native srun -N {0} -n{1} -c 1 --mpi=pmix_v3 singularity run simsopt_v0.11.0.sif /venv/bin/python -u ball_scan.py {2} {3} {4} & \n".format(nodesperjob, nprocs, iter0, i, ngroups)
+    # If you are using a SIMSOPT Python environment uncomment the line below
+    #ballcmd2  = "srun -N {0} -n{1} -c 1 python3 -u ball_scan.py {2} {3} {4} & \n".format(nodesperjob, nprocs, iter0, i, ngroups)
     execlist.append(ballcmd2)
 
 # The total number of execs is almost never divisible by numjobs
 # So we split the executables equally and move the rest to the last slurm job
 rem_execs = np.mod(totalexecs, numjobs)    
 #print(rem_execs, totalexecs, numjobs)
-#print(execlist, len(execlist))
 
 
 if rem_execs == 0: 

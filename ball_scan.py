@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 """
-This script calls a single instance of VMEC and finds the ideal ballooning equation for the state vector x0.
-The maximum growth rate, theta0 (at the max. growth rate), and eigenfunction (at the max growth rate) are then used by the ball_fine_scan.py routine to accurately calculate the max. ballooning growth rate.
+This scripts calculate the ballooning growth rates for all surfaces and for all Dofs.
 
-This is one of the dof_idx number of scripts that have to be run concurrently to calculate the objective fuction for different values of x0
 """
 import numpy as np
 import os
@@ -87,23 +85,6 @@ else:
 
 
 if len(save_dict['iotaidxs']) > 0:
-    #niota_deg = 5
-    #len0 = 80 # length of non-zero floats in ai_aux_s
-    #
-    #funfit2 = np.polynomial.polynomial.polyfit(vmec.indata.ai_aux_s[:len0], vmec.indata.ai_aux_f[:len0], niota_deg)
-    #print("Max iota fit error = {0} \n ".format(np.max(np.abs(np.polynomial.polynomial.polyval(vmec.indata.ai_aux_s[:len0], funfit2) - vmec.indata.ai_aux_f[:len0]))))
-    #
-    #vmec.n_iota = len(funfit2)
-    #
-    #vmec.indata.piota_type = 'power_series'
-    #vmec.iota_profile = ProfilePolynomial(funfit2)
-    #vmec.iota_profile.fix_all()
-    #
-    #iotap = ProfilePolynomial(funfit2*1.0)
-    #vmec.iota_profile = iotap
-    #iotap.unfix(save_dict['iotaidxs'])
-    #vmec.iota_profile = ProfileScaled(iotap, 1.0)
-
 
     vmec.indata.piota_type = 'power_series'
     ai      = np.abs(vmec.indata.ai)
@@ -271,8 +252,6 @@ for i in range(alpha_grp):
         gamma_scan_guess[aidx, j]   = temp_RE
         #temp_RE_guess            = 1.2*abs(temp_RE) + 0.05
  
-
-   
 # When the maximum growth rate is 0., we observe multiple indices with a growth rate of 0.
 # This breaks the code. Therefore, we add the following if statement.
 if np.max(gamma_scan_guess) == 0.:
@@ -299,8 +278,6 @@ else:
 
 print("info before rank = ", rank, sigma0, dof_idx)
 
-##print("err_chk", mpi.group, alpha_guess[0], theta0_guess[0])
-#
 ## After coarsely scanning the growth rate over alpha-theta0 grid, we use the maximum growth rate from
 ## the coarse grid and use that to find the accurate maximum growth rate and the correspondgin alpha and theta0
 if rank == 0:
@@ -330,7 +307,6 @@ if rank == 0:
     
     temp_RE, X_arr, dX_arr, g_arr, c_arr, f_arr = gamma_ball_full(dPdrho, theta, bmag, gradpar, cvdrift_fth, gds2_fth, vguess) 
     
-    #print("before barrier!")
     comm_lead.Barrier()
     
     #print("after barrier!")
@@ -338,58 +314,6 @@ if rank == 0:
     comm_lead.Gather([theta0_guess, MPI.DOUBLE], [theta0_arr_s, MPI.DOUBLE], root=0)
     comm_lead.Gather([alpha_guess, MPI.DOUBLE], [alpha_arr_s, MPI.DOUBLE], root=0)
     comm_lead.Gather([temp_RE, MPI.DOUBLE], [temp_arr1_s, MPI.DOUBLE], root=0)
-    #comm_lead.Gather([np.reshape(np.vstack((X_arr.flatten() , dX_arr.flatten(), g_arr.flatten(), c_arr.flatten(), f_arr.flatten())), (5, -1)), MPI.DOUBLE], [temp_arr2_s, MPI.DOUBLE], root=0)
-     
-
-#comm_grp.Barrier()
-    #print("after gather!")
-
-
-
-#obj1 = minimize(obj_w_grad, x0=(alpha_guess[0], theta0_guess[0]), args=(vs, rho_arr[mpi.group], theta, vguess, sigma0), jac=True, bounds = ((0.0, np.pi), (0.0, 0.5*np.pi)), options={'ftol': 5.e-11, 'gtol': 2.e-08, 'maxiter':30})
-#    
-## values of alpha and theta0 at which the growth rate is maximum
-#alpha_guess  = obj1.x[0]
-#theta0_guess = obj1.x[1]
-#
-#print("max_gamma, mpi.group, dof_idx", mpi.group, dof_idx, obj1)
-#
-#geo_coeffs = vmec_fieldlines(vs, rho_arr[mpi.group], alpha_guess, theta1d=theta)
-#aidx       = 0
-#bmag       = geo_coeffs.bmag[0][aidx]
-#gbdrift    = geo_coeffs.gbdrift[0][aidx]
-#cvdrift    = geo_coeffs.cvdrift[0][aidx]
-#cvdrift0   = geo_coeffs.cvdrift0[0][aidx] 
-#gds2       = geo_coeffs.gds2[0][aidx]
-#gds21      = geo_coeffs.gds21[0][aidx]
-#gds22      = geo_coeffs.gds22[0][aidx]
-#gradpar    = geo_coeffs.gradpar_theta_pest[0][aidx]
-#dPdrho     = -1.0*0.5*np.mean((cvdrift-gbdrift)*bmag**2)
-#
-#cvdrift_fth  = cvdrift + theta0_guess*cvdrift0
-#gds2_fth     = gds2    + 2*theta0_guess*gds21 + theta0_guess**2*gds22
-#
-#temp_RE, X_arr, dX_arr, g_arr, c_arr, f_arr = gamma_ball_full(dPdrho, theta, bmag, gradpar, cvdrift_fth, gds2_fth, vguess) 
-#
-##print("before barrier!")
-#comm_grp.Barrier()
-#    
-## After coarsely scanning the growth rate over alpha-theta0 grid, we use the maximum growth rate from
-## the coarse grid and use that to find the accurate maximum growth rate and the correspondgin alpha and theta0
-##if rank == 0:
-#
-##print("after barrier!")
-## gather theta0_arr_s from all the groups into a single array
-#comm_lead.Gather([theta0_guess, MPI.DOUBLE], [theta0_arr_s, MPI.DOUBLE], root=0)
-#comm_lead.Gather([alpha_guess, MPI.DOUBLE], [alpha_arr_s, MPI.DOUBLE], root=0)
-#comm_lead.Gather([temp_RE, MPI.DOUBLE], [temp_arr1_s, MPI.DOUBLE], root=0)
-##comm_lead.Gather([np.reshape(np.vstack((X_arr.flatten() , dX_arr.flatten(), g_arr.flatten(), c_arr.flatten(), f_arr.flatten())), (5, -1)), MPI.DOUBLE], [temp_arr2_s, MPI.DOUBLE], root=0)
-#     
-#
-#comm_grp.Barrier()
-##print("after gather!")
-#
-
 
     if mpi.group == 0: # Collecting all the growth rates from different surfaces/mpi.groups and 
                        # saving them to a numpy file

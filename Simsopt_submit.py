@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script submits the batch file used to calculate the geometry and GS2 input files for all the Dofs and surfaces.
+This script submits the batch file used to calculate the geometry for all the Dofs and surfaces.
 """
 
 import subprocess as spr
@@ -23,9 +23,7 @@ nprocspernode = save_dict['nprocspernode']
 nodes  = save_dict['nodespersimsopt']
 
 ngroups        = int(nodes*nprocspernode/((totalndofs + 1)*nsurfs))
-#ngroups        = int(nodes*nprocspernode/((totalndofs + 1)))
 nprocs_simsopt = int(nodes*nprocspernode/(totalndofs + 1))
-#nprocs_simsopt = nsurfs
 
 spr.call(["sed -ri 's@nodes=[0-9]*@nodes={0:d}@g' slurm_Simsopt_template.sl".format(nodes)], shell=True)
 
@@ -37,6 +35,7 @@ with open('slurm_Simsopt.sl', 'a') as f:
 	#lines = f.readlines()
 	for i in range(totalndofs + 1):
 		Simsoptcmd2  = "PMIX_MCA_psec=native  PMIX_MCA_gds=hash srun -N {0} -n{1} -c 1 --mpi=pmix_v3 singularity run simsopt_v0.13.0.sif /venv/bin/python -u Simsopt_runner.py {2} {3} {4} & \n".format(nodes, nprocs_simsopt, iter0, i, ngroups)
+                # If you are using a SIMSOPT Python environment uncomment the line below
 		#Simsoptcmd2  = "srun -N {0} -n{1} -c 1 python3 -u Simsopt_runner.py {2} {3} {4} & \n".format(nodes, nprocs_simsopt, iter0, i, ngroups)
 		f.write(Simsoptcmd2)
 
@@ -65,17 +64,6 @@ with open(fname2, 'w') as myoutput:
 	p = spr.Popen('squeue -j {0}'.format(jobid), shell=True, stdout=myoutput)
 	p.wait()
 
-#while len(open(fname2, 'r').readlines()) == 2:
-#	time.sleep(2)
-#	#print("sleeping!")
-#	rmcmd = 'rm ' + os.getcwd()  + '/' + fname2
-#	p = spr.Popen(rmcmd, shell=True)
-#	p.wait()
-#	with open(fname2, 'w') as myoutput:
-#		p = spr.Popen('squeue -j {0}'.format(jobid), shell=True, stdout=myoutput)
-#		p.wait()
-#	#spr.call(['tail -f slurm-{0}.out'.format(jobid)], shell=True)
-
 
 while ' '.join(open(fname2, 'r').readlines()[1].split()).split(' ')[4] != 'CG':
 	time.sleep(2)
@@ -87,7 +75,6 @@ while ' '.join(open(fname2, 'r').readlines()[1].split()).split(' ')[4] != 'CG':
 		p = spr.Popen('squeue -j {0}'.format(jobid), shell=True, stdout=myoutput)
 		p.wait()
 			
-	#spr.call(['tail -f slurm-{0}.out'.format(jobid)], shell=True)
 
 time.sleep(10)
 

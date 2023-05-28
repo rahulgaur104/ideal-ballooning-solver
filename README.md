@@ -6,7 +6,7 @@ The details of implementation of this method and the results are available on ar
 
 ## Dependencies
 
-If you are using a cluster or supercomputer that uses SLURM, you need a Python version >= 3.8 and a [SIMSOPT singularity image\_v0.13](https://simsopt.readthedocs.io/en/latest/containers.html#singularity-container) to run this optimizer. However, if you are running this on a laptop or a device without SLURM, you need to install the SIMSOPT optimization package and the VMEC2000 code from the [SIMSOPT GitHub page](https://github.com/hiddenSymmetries/simsopt) and make three one-line changes to the Simsopt\_runner.py (line 39) and ball\_scan.py (line 56) and slurm\_x0.sl (line 11) files.
+If you are using a cluster or supercomputer that uses SLURM, you need a Python version >= 3.8 and a [SIMSOPT singularity image\_v0.13](https://simsopt.readthedocs.io/en/latest/containers.html#singularity-container) to run this optimizer. However, if you are running this on a laptop or a device without SLURM, you need to install the SIMSOPT optimization package and the VMEC2000 code from the [SIMSOPT GitHub page](https://github.com/hiddenSymmetries/simsopt) and make three one-line changes to the Simsopt\_submit.py (line 37) and ball\_submit.py (line 56) and slurm\_x0.sl (line 11) files.
 
 ## Instructions to reproduce the results in the adjoint-ballooning paper
 
