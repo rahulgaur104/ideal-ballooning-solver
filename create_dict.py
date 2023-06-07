@@ -8,6 +8,7 @@ import os
 import pickle
 import pdb
 import sys
+import subprocess as spr
 
 eqbm_option =int(eval(sys.argv[1]))
 
@@ -117,8 +118,6 @@ else:
 ###################-------------ADDITIONAL UNRELATED KNOBS-------------###################
 ##########################################################################################
 
-# username on the machine 
-username  =  "rg6256"
 
 ## number of nodes needed for a simsopt scan (mod(nprocspernode*nodespersimsopt,12) = 0)
 nodespersimsopt = int(1) 
@@ -131,6 +130,13 @@ elif int(ngroups) == 0:
     print("\nSimsopt error: Error! Increase nodespersimsopt! \n")
 else:
     print("\nSimsopt warning: not perfectly divisible! \n")
+
+
+# username on the machine 
+p = spr.Popen(["whoami"], shell=True, stdout=spr.PIPE)
+username = eval(str(p.stdout.read())).decode("utf-8")
+username = username[:-1]
+print("Hi", username, ",\n")
 
 
 save_dict = {'maxf':maxf, 'eqbm_option':eqbm_option, 'pol_idxs':pol_idxs, 'tor_idxs':tor_idxs, 'iotaidxs':iotaidxs, 'isphifree':isphifree, 'totalndofs':totalndofs, 'nsurfs':nsurfs, 'abs_step':abs_step, 'rel_step':rel_step, 'username':username,  'nprocspernode':nprocspernode, 'nodesperball':nodesperball, 'totalnexecball':totalnexecball, 'njobsball':njobsball, 'nodespersimsopt':nodespersimsopt}

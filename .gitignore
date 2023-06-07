@@ -7,4 +7,5 @@ slurmstatus*.txt
 
 save_n_load/*.npy
 
+*.pkl
 
