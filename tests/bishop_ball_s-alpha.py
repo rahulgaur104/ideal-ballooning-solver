@@ -30,7 +30,7 @@ def check_ball(shat_n, alpha_n, theta0):
         # The expression of these coefficients are given in CHT's PRL, Bishop's notes, Edmund Highcock's thesis etc.
         g = 1 + (shat_n*(theta_ball-theta0) - alpha_n*(np.sin(theta_ball)-np.sin(theta0)))**2
         c = alpha_n*(np.cos(theta_ball) + np.sin(theta_ball)*(shat_n*(theta_ball-theta0) - alpha_n*(np.sin(theta_ball)-np.sin(theta0))))
-        f = 0.
+        f = np.zeros((ntheta, ))
 
         ch = np.zeros((ntheta,))
         gh = np.zeros((ntheta,))
@@ -105,7 +105,7 @@ def check_ball_long(shat_n, alpha_n, theta0):
 
         g = 1 + (shat_n*(theta_ball-theta0) - alpha_n*(np.sin(theta_ball)-np.sin(theta0)))**2
         c = alpha_n*(np.cos(theta_ball) + np.sin(theta_ball)*(shat_n*(theta_ball-theta0) - alpha_n*(np.sin(theta_ball)-np.sin(theta0))))
-        f = 0.
+        f = np.zeros((ntheta, ))
 
 
         ch = np.zeros((ntheta,))
@@ -184,6 +184,7 @@ ball_scan_arr3 = np.zeros((len1, len2))
 
 os.environ["OMP_NUM_THREADS"]="1"
 
+# Change the nop value to the number of processors on your system
 nop = int(40)
 
 pool = mp.Pool(processes=nop)
