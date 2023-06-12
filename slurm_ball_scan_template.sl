@@ -2,7 +2,7 @@
 
 #SBATCH --qos=regular
 #SBATCH --time=00:08:00
-#SBATCH --nodes=1
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=96
 #SBATCH --cpus-per-task=1
 

@@ -178,8 +178,9 @@ nsurfs  = ngroups
 rho_arr = np.linspace(0.32, 0.92, nsurfs) 
 #rho_arr = np.linspace(0.15, 0.90, ngroups) 
 
-nperiod    = 3
-theta_fac  = 2*nperiod-1
+#nperiod    = 3
+#theta_fac  = 2*nperiod-1
+theta_fac = int(4)
 
 if vmec.wout.ntor == 0:
     ntheta     = int(2 * vmec.wout.mpol * theta_fac) + 1

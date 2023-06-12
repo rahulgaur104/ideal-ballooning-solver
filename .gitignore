@@ -9,3 +9,10 @@ save_n_load/*.npy
 
 *.pkl
 
+input.dof*
+
+sbatchout*
+
+fort*
+
+*.nc

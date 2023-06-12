@@ -95,8 +95,8 @@ else:
     njobsball = int(2)
     nodesperball = int(8)
 
-ngroups = int(nodesperball/njobsball*nprocspernode/totalnexecball)
-nsurfs  = int(ngroups) 
+#ngroups = int(nodesperball/njobsball*nprocspernode/totalnexecball)
+#nsurfs  = int(ngroups) 
 
 # Tells us how many alpha values can be scanned simultaneously in a single
 # instance of ball_scan.py. np.floor is the same as np.int

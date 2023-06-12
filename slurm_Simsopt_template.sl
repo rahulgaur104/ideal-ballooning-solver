@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --qos=debug
-#SBATCH --time=00:05:00
+#SBATCH --time=00:25:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=96
 #SBATCH --cpus-per-task=1
