@@ -3,7 +3,7 @@ We present a simple test to calculate and compare the marginal ideal ballooning 
 Please ensure that your Python environment has the multiprocessing package. If not, use
 
 ```
-pip install multiprocessing
+pip install multiprocess
 ```
 
 The expression for the coefficients g, c and, f and marginal stability diagram is given in Chris Bishop's notes [here](https://inis.iaea.org/search/search.aspx?orig_q=RN:17000660). 

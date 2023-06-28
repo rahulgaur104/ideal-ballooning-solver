@@ -1,5 +1,7 @@
 # ballopt: stellarator and tokamak stability optimizer
 
+[![DOI](https://zenodo.org/badge/523432429.svg)](https://zenodo.org/badge/latestdoi/523432429)
+
 This repository contains a set of Python scripts that, along with the SIMSOPT package can optimize or evaluate a tokamak or stellarator equilibrium against the infinite-n, ideal ballooning mode using an adjoint-based method.
 
 The details of implementation of this method and the results are available on arxiv: [An adjoint-based method to optimize MHD equilibria against the infinite-n ideal ballooning mode](https://arxiv.org/abs/2302.07673)
