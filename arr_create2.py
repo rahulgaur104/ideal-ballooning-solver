@@ -31,7 +31,7 @@ rmold = "rm -r df0_list.out \n rm -r f0_list.out \n rm penalties.out \n rm -r {0
 spr.call([rmold], shell=True)
 
 eqbm_arr = ["D3D", "NCSX", "HBERG", "NW"]
-eqbm_option = save_dict["eqbm_option"]
+eqbm_option = save_dict["eqbm_option"] # to decide if it's a tokamak or stellarator
 
 VMECinpcp = ""
 for i in range(totalndofs+1):

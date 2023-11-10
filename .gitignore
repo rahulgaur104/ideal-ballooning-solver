@@ -13,6 +13,10 @@ input.dof*
 
 sbatchout*
 
+threed1*
+
+slurm*.out
+
 fort*
 
 *.nc

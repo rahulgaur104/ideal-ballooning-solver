@@ -175,8 +175,7 @@ vs = vmec_splines(vmec)
 nsurfs  = ngroups
 
 #rho_arr = np.linspace(0.4, 0.95, nsurfs) 
-rho_arr = np.linspace(0.32, 0.92, nsurfs) 
-#rho_arr = np.linspace(0.15, 0.90, ngroups) 
+rho_arr = np.linspace(0.5, 0.95, nsurfs) 
 
 #nperiod    = 3
 #theta_fac  = 2*nperiod-1

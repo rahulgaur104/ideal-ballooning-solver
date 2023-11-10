@@ -42,7 +42,6 @@ else: # eqbm_option cold start
 #indices of iota Dofs
 iotaidxs = np.array([])
 #iotaidxs = np.array([0, 1])
-#iotaidxs = np.array([0, 3, 5])
 
 # number of boundary degrees of freedom
 ndofsb = 0
@@ -74,7 +73,7 @@ rel_step = 2.0E-3
 totalndofs = ndofsb + ndofsi + ndofsp + isphifree
 
 # number of flux surfaces to scan
-nsurfs = int(8)
+nsurfs = int(5)
 
 # nuber of processors on each node on your system
 nprocspernode = int(96)
@@ -108,10 +107,10 @@ if nalpha_fac <= 2:
 # number of processors per ball_scan  run
 if np.mod((nprocspernode*nodesperball), totalnexecball*nsurfs) == 0:
     nprocsperball = int((nprocspernode*nodesperball)/totalnexecball)
-elif int((nprocspernode*nodesperball)/(totalnexecball*nsurfs)) == 0:
-    print("\nBall error: Error! Increase nodesperball! \n")
-else:
-    print("\nBall warning: not perfectly divisible! \n")
+#elif int((nprocspernode*nodesperball)/(totalnexecball*nsurfs)) == 0:
+#    print("\nBall error: Error! Increase nodesperball! \n")
+#else:
+#    print("\nBall warning: not perfectly divisible! \n")
 
 
 ##########################################################################################

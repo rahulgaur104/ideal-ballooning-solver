@@ -51,7 +51,7 @@ with open(path0 + "/penalty.npy", 'wb') as f:
 #6 -> micro_gamma,
 #7 -> ball_gamma
 
-# set stability threshold. An equilibrium is ball stable if the 
+# set stability threshold. An equilibrium is ballooning stable if the 
 # growth rate is less than gamma_ball_thresh
 gamma_ball_thresh = -0.0002
 prefac = np.array([0.5, 0.5, 0.0, 0., 0., 0., 0., 50])
@@ -159,18 +159,23 @@ def dfobj(x0):
             
             for i in range(totalndofs+1):
                 dof_idx = i
-
                 if np.load(path0 + '/isabs{0}.npy'.format(i), allow_pickle=True)[-1] == 1:
                 	step_arr[i] = save_dict['abs_step']
                 else:
                 	step_arr[i] = save_dict['rel_step']*x0[i-1]
 
-                gamma_ball = np.load(path0 + "/ball_gam{0}.npy".format(dof_idx), allow_pickle=True)[-1]
-                gamma_ball2[i] = gamma_ball
+                gamma_ball = np.load(path0 + "/ball_gam{0}.npy".format(dof_idx), allow_pickle=True)
+                if len(np.shape(gamma_ball)) == 1:
+                    gamma_ball2[i] = gamma_ball
+                else:
+                    gamma_ball2[i] = gamma_ball[-1]
         else:# What should the gradients be if VMEC doesn't converge? Setting to 0
             for i in range(totalndofs+1):
 
-                gamma_ball2[i] = 0.
+                if len(np.shape(gamma_ball)) == 1:
+                    gamma_ball2[i] = np.zeros((nsurfs,))
+                else:
+                    gamma_ball2[i] = np.zeros((nsurfs,))
 
 
     if isconvrgd == 1:
