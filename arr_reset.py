@@ -14,25 +14,25 @@ path1 = os.getcwd() + "/save_n_load"
 
 reset_type = sys.argv[1]
 
-with open('params_dict.pkl', 'rb') as f:
+with open("params_dict.pkl", "rb") as f:
     save_dict = pickle.load(f)
 
-totalndofs = save_dict['totalndofs']
-nsurfs     = save_dict['nsurfs']
+totalndofs = save_dict["totalndofs"]
+nsurfs = save_dict["nsurfs"]
 # The user needs to have prior information about the optimization runs
 # before creating done_arr and cntr_arr
-#njobsGS2fl  = save_dict['njobsGS2fl']
-#execsperjob = int(save_dict['totalnexecGS2fl']/njobsGS2fl)
+# njobsGS2fl  = save_dict['njobsGS2fl']
+# execsperjob = int(save_dict['totalnexecGS2fl']/njobsGS2fl)
 
-#if reset_type == 'f': # full reset
+# if reset_type == 'f': # full reset
 #    for i in range(njobsGS2fl):
 #        np.save(path1 + "/done{0}.npy".format(int(i)), np.linspace(i*execsperjob, (i+1)*execsperjob-1, execsperjob, dtype=int))
 #        np.save(path1 + "/cntr_arr{0}.npy".format(int(i)), np.ones((execsperjob,), dtype=int))
-#     
-#    # This doesn't need to be reset now as we have fixed nlambda   
+#
+#    # This doesn't need to be reset now as we have fixed nlambda
 #    for i in range(int((totalndofs+1)*nsurfs)):
 #        np.save(path1 + "/cntr_allowd{0}.npy".format(int(i)), np.empty([], dtype=int))
-#else:
+# else:
 #    for i in range(njobsGS2fl):
 #        np.save(path1 + "/done{0}.npy".format(int(i)), np.linspace(i*execsperjob, (i+1)*execsperjob-1, execsperjob, dtype=int))
 #        np.save(path1 + "/cntr_arr{0}.npy".format(int(i)), np.ones((execsperjob,), dtype=int))
