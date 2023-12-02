@@ -4,8 +4,8 @@ authors:
 - family-names: "Gaur"
   given-names: "Rahul"
   orcid: "https://orcid.org/0000-0003-4367-9052"
-title: "publication"
-version: 0.1.0
-doi: 10.5281/zenodo.8092287
-date-released: 2023-06-28
+title: "ideal-ballooning-solver"
+version: 0.2.0
+doi: 10.5281/zenodo.10251825
+date-released: 2023-12-03
 url: "https://github.com/rahulgaur104/ideal-ballooning-solver"
