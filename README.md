@@ -30,8 +30,10 @@ from your login node. After each iteration, the data are saved in the directory 
 
 Please do not hesitate to contact me at rgaur@terpmail.umd.edu if you need any help running or understanding this optimizer.
 
+## Update 2025: A new, GPU-accelerated version of this solver and optimizer is available as a part of the DESC code [here](https://github.com/PlasmaControl/DESC/blob/master/docs/notebooks/tutorials/ideal_ballooning_stability.ipynb).
+
 ## Relevant papers
-* [An adjoint-based method to optimize MHD equilibria against the infinite-n ideal ballooning mode](https://arxiv.org/abs/2302.07673)
+* [An adjoint-based method to optimize MHD equilibria against the infinite-n ideal ballooning mode](https://doi.org/10.1017/S0022377823000995)
 * [SIMSOPT: A flexible framework for stellarator optimization](https://joss.theoj.org/papers/10.21105/joss.03525)
 * [COBRA: An Optimized Code for Fast Analysis of Ideal Ballooning Stability of Three-Dimensional Magnetic Equilibria](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.596.1387&rep=rep1&type=pdf)
 
