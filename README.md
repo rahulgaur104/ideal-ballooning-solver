@@ -5,6 +5,7 @@
 This repository contains a set of Python scripts that, along with the SIMSOPT package can optimize or evaluate a tokamak or stellarator equilibrium against the infinite-n, ideal ballooning mode using an adjoint-based method.
 
 The details of implementation of this method and the results are available in the paper [An adjoint-based method to optimize MHD equilibria against the infinite-n ideal ballooning mode](https://doi.org/10.1017/S0022377823000995)
+Please cite the paper if you find the code useful.
 
 
 ## Dependencies
